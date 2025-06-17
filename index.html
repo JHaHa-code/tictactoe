@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>배재현</title>
+    <meta name="theme-color" content="#0f0f23">
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoi7YWx7YOd7YGgIOuniOyKpO2EsCIsInNob3J0X25hbWUiOiLtlbHtg53thaBHYW1lIiwic3RhcnRfdXJsIjoiLyIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiMwZjBmMjMiLCJ0aGVtZV9jb2xvciI6IiMwZjBmMjMiLCJpY29ucyI6W3sic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCM2FXUjBhRDBpTVRJNElpQm9aV2xuYUhROUlqRXlPQ0lpSUhacFpYZENiM2c5SWpBZ01DQXhNamdnTVRJNElpQm1hV3hzUFNJak1EQXdJajQ4TDNOMlp6ND0iLCJzaXplcyI6IjEyOHgxMjgiLCJ0eXBlIjoiaW1hZ2Uvc3ZnK3htbCJ9XX0=">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0f0f23;
+            --bg-secondary: #1a1a2e;
+            --bg-tertiary: #16213e;
+            --bg-card: #1e1e3f;
+            --accent-primary: #00d4ff;
+            --accent-secondary: #7c3aed;
+            --accent-tertiary: #f59e0b;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --border: #27272a;
+            --border-light: #3f3f46;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+            --glow: 0 0 20px rgba(0, 212, 255, 0.3);
+            --glow-purple: 0 0 20px rgba(124, 58, 237, 0.3);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-tertiary) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 배경 애니메이션 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(124, 58, 237, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(245, 158, 11, 0.05) 0%, transparent 50%);
+            animation: backgroundFloat 20s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes backgroundFloat {
+            0%, 100% { transform: translateX(0) translateY(0) rotate(0deg); }
+            25% { transform: translateX(-20px) translateY(-10px) rotate(1deg); }
+            50% { transform: translateX(20px) translateY(10px) rotate(-1deg); }
+            75% { transform: translateX(-10px) translateY(20px) rotate(0.5deg); }
+        }
+
+        .container {
+            background: rgba(30, 30, 63, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-light);
+            border-radius: 24px;
+            padding: 2.5rem;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from { filter: brightness(1); }
+            to { filter: brightness(1.2); }
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 400;
+            letter-spacing: 0.01em;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .sound-toggle {
+            width: 48px;
+            height: 48px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sound-toggle::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .sound-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--glow);
+            border-color: var(--accent-primary);
+        }
+
+        .sound-toggle:hover::before {
+            left: 100%;
+        }
+
+        .new-game-btn {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border: none;
+            padding: 0.875rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.01em;
+        }
+
+        .new-game-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .new-game-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--glow);
+        }
+
+        .new-game-btn:hover::before {
+            left: 100%;
+        }
+
+        .new-game-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .status {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .status::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary));
+            animation: statusGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes statusGlow {
+            from { opacity: 0.5; }
+            to { opacity: 1; }
+        }
+
+        .status-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .status-sub {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        .ai-thinking {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--accent-secondary);
+            border-radius: 12px;
+            animation: thinkingPulse 2s ease-in-out infinite;
+        }
+
+        .ai-thinking.active {
+            display: flex;
+        }
+
+        @keyframes thinkingPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(124, 58, 237, 0); }
+        }
+
+        .thinking-text {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .thinking-dots {
+            display: flex;
+            gap: 0.3rem;
+        }
+
+        .thinking-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-secondary);
+            border-radius: 50%;
+            animation: thinkingDot 1.4s ease-in-out infinite both;
+        }
+
+        .thinking-dot:nth-child(1) { animation-delay: -0.32s; }
+        .thinking-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes thinkingDot {
+            0%, 80%, 100% {
+                transform: scale(0);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .board::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            padding: 1px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 20px;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            opacity: 0.3;
+        }
+
+        .cell {
+            aspect-ratio: 1;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cell::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .cell:hover:not(.disabled)::before {
+            opacity: 0.1;
+        }
+
+        .cell:hover:not(.disabled) {
+            transform: translateY(-4px) scale(1.02);
+            border-color: var(--accent-primary);
+            box-shadow: var(--glow);
+        }
+
+        .cell.disabled {
+            cursor: not-allowed;
+        }
+
+        .cell-content {
+            position: relative;
+            z-index: 1;
+            animation: cellAppear 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes cellAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.3) rotate(180deg);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .cell-x {
+            color: var(--error);
+            text-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+        }
+
+        .cell-o {
+            color: var(--success);
+            text-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+        }
+
+        .scores {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .score-item {
+            text-align: center;
+            padding: 1.25rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .score-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent-primary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .score-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--glow);
+        }
+
+        .score-item:hover::before {
+            transform: scaleX(1);
+        }
+
+        .score-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .score-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            animation: scoreUpdate 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes scoreUpdate {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-primary);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+        }
+
+        .celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            animation: confetti 3s ease-out forwards;
+        }
+
+        @keyframes confetti {
+            0% {
+                opacity: 1;
+                transform: translateY(-100vh) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(720deg);
+            }
+        }
+
+        /* 모바일 최적화 */
+        @media (max-width: 480px) {
+            body {
+                padding: 0.5rem;
+            }
+
+            .container {
+                padding: 2rem 1.5rem;
+                border-radius: 20px;
+            }
+
+            .title {
+                font-size: 2rem;
+            }
+
+            .controls {
+                flex-direction: column;
+                gap: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .cell {
+                font-size: 2rem;
+            }
+
+            .board {
+                gap: 0.75rem;
+                padding: 1rem;
+            }
+
+            .scores {
+                gap: 0.75rem;
+            }
+
+            .stats {
+                gap: 0.75rem;
+            }
+        }
+
+        /* PWA 스타일 */
+        @media (display-mode: standalone) {
+            body {
+                padding-top: env(safe-area-inset-top);
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+        }
+
+        /* 접근성 */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* 터치 최적화 */
+        @media (hover: none) and (pointer: coarse) {
+            .cell:hover:not(.disabled) {
+                transform: none;
+                box-shadow: none;
+            }
+            
+            .cell:active:not(.disabled) {
+                transform: scale(0.95);
+                background: var(--bg-tertiary);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">틱택토</h1>
+            <p class="subtitle">배재현</p>
+        </header>
+
+        <div class="controls">
+            <div class="sound-toggle" id="soundToggle">🔊</div>
+            <button class="new-game-btn" id="newGameBtn">새 게임</button>
+        </div>
+
+        <div class="ai-thinking" id="aiThinking">
+            <span class="thinking-text">AI 생각 중</span>
+            <div class="thinking-dots">
+                <div class="thinking-dot"></div>
+                <div class="thinking-dot"></div>
+                <div class="thinking-dot"></div>
+            </div>
+        </div>
+
+        <div class="status">
+            <div class="status-text" id="statusText">당신의 차례입니다</div>
+            <div class="status-sub" id="statusSub">빈 칸을 터치하여 X를 놓으세요</div>
+        </div>
+
+        <div class="board" id="gameBoard">
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+        </div>
+
+        <div class="scores">
+            <div class="score-item">
+                <div class="score-label">플레이어</div>
+                <div class="score-value" id="playerScore">0</div>
+            </div>
+            <div class="score-item">
+                <div class="score-label">무승부</div>
+                <div class="score-value" id="drawScore">0</div>
+            </div>
+            <div class="score-item">
+                <div class="score-label">AI</div>
+                <div class="score-value" id="aiScore">0</div>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-value" id="totalGames">0</div>
+                <div class="stat-label">총 게임</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="winRate">0%</div>
+                <div class="stat-label">승률</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="currentStreak">0</div>
+                <div class="stat-label">연승</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="difficulty">보통</div>
+                <div class="stat-label">난이도</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="celebration" id="celebration"></div>
+
+    <script>
+        class BeautifulTicTacToe {
+            constructor() {
+                this.board = Array(9).fill('');
+                this.currentPlayer = 'X';
+                this.gameActive = true;
+                this.soundEnabled = true;
+                this.difficulties = ['어려움', '전문가', '불가능'];
+                this.currentDifficulty = this.getRandomDifficulty();
+                
+                this.stats = {
+                    playerWins: 0,
+                    aiWins: 0,
+                    draws: 0,
+                    totalGames: 0,
+                    currentStreak: 0,
+                    bestStreak: 0
+                };
+
+                this.audioContext = null;
+                this.initAudio();
+                this.loadData();
+                this.init();
+            }
+
+            initAudio() {
+                try {
+                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                } catch (e) {
+                    console.warn('Web Audio API not supported');
+                }
+            }
+
+            getRandomDifficulty() {
+                return this.difficulties[Math.floor(Math.random() * this.difficulties.length)];
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.updateDisplay();
+                this.updateStatus();
+                
+                // 50% 확률로 AI가 먼저 시작
+                if (Math.random() < 0.5) {
+                    this.currentPlayer = 'O';
+                    setTimeout(() => this.makeAIMove(), 1000);
+                }
+            }
+
+            setupEventListeners() {
+                // 셀 클릭
+                document.querySelectorAll('.cell').forEach((cell, index) => {
+                    cell.addEventListener('click', () => this.handleCellClick(index));
+                });
+
+                // 새 게임
+                document.getElementById('newGameBtn').addEventListener('click', () => this.newGame());
+
+                // 사운드 토글
+                document.getElementById('soundToggle').addEventListener('click', () => this.toggleSound());
+
+                // 키보드 지원
+                document.addEventListener('keydown', (e) => {
+                    if (e.key >= '1' && e.key <= '9') {
+                        this.handleCellClick(parseInt(e.key) - 1);
+                    } else if (e.key === ' ' || e.key === 'Enter') {
+                        this.newGame();
+                    }
+                });
+
+                // 터치 제스처
+                let touchStartY = 0;
+                
+                document.addEventListener('touchstart', (e) => {
+                    touchStartY = e.touches[0].clientY;
+                });
+
+                document.addEventListener('touchend', (e) => {
+                    const touchEndY = e.changedTouches[0].clientY;
+                    const deltaY = touchEndY - touchStartY;
+
+                    if (Math.abs(deltaY) > 50 && deltaY < 0) {
+                        this.newGame();
+                    }
+                });
+            }
+
+            handleCellClick(index) {
+                if (!this.gameActive || this.board[index] !== '' || this.currentPlayer === 'O') {
+                    this.playSound('error');
+                    return;
+                }
+
+                this.makeMove(index, 'X');
+                this.playSound('move');
+
+                if (this.gameActive) {
+                    this.currentPlayer = 'O';
+                    this.showAIThinking();
+                    setTimeout(() => {
+                        this.makeAIMove();
+                        this.hideAIThinking();
+                    }, 800 + Math.random() * 1200);
+                }
+            }
+
+            makeMove(index, player) {
+                this.board[index] = player;
+                this.updateCell(index, player);
+                
+                const winner = this.checkWinner();
+                if (winner) {
+                    this.endGame(winner);
+                } else if (this.board.every(cell => cell !== '')) {
+                    this.endGame('draw');
+                } else {
+                    this.updateStatus();
+                }
+            }
+
+            makeAIMove() {
+                if (!this.gameActive) return;
+
+                let move = this.getBestMove();
+                
+                // 난이도에 따른 실수 확률
+                const errorRate = this.currentDifficulty === '어려움' ? 0.2 : 
+                                 this.currentDifficulty === '전문가' ? 0.1 : 0.05;
+                
+                if (Math.random() < errorRate) {
+                    const availableMoves = this.board
+                        .map((cell, i) => cell === '' ? i : null)
+                        .filter(i => i !== null);
+                    
+                    if (availableMoves.length > 0) {
+                        move = availableMoves[Math.floor(Math.random() * availableMoves.length)];
+                    }
+                }
+
+                if (move !== -1) {
+                    this.makeMove(move, 'O');
+                    this.playSound('aiMove');
+                    this.currentPlayer = 'X';
+                }
+            }
+
+            getBestMove() {
+                let bestScore = -Infinity;
+                let bestMove = -1;
+
+                for (let i = 0; i < 9; i++) {
+                    if (this.board[i] === '') {
+                        this.board[i] = 'O';
+                        const score = this.minimax(this.board, 0, false);
+                        this.board[i] = '';
+                        
+                        if (score > bestScore) {
+                            bestScore = score;
+                            bestMove = i;
+                        }
+                    }
+                }
+
+                return bestMove;
+            }
+
+            minimax(board, depth, isMaximizing) {
+                const winner = this.checkWinnerForBoard(board);
+                
+                if (winner === 'O') return 10 - depth;
+                if (winner === 'X') return depth - 10;
+                if (board.every(cell => cell !== '')) return 0;
+
+                if (isMaximizing) {
+                    let bestScore = -Infinity;
+                    for (let i = 0; i < 9; i++) {
+                        if (board[i] === '') {
+                            board[i] = 'O';
+                            const score = this.minimax(board, depth + 1, false);
+                            board[i] = '';
+                            bestScore = Math.max(score, bestScore);
+                        }
+                    }
+                    return bestScore;
+                } else {
+                    let bestScore = Infinity;
+                    for (let i = 0; i < 9; i++) {
+                        if (board[i] === '') {
+                            board[i] = 'X';
+                            const score = this.minimax(board, depth + 1, true);
+                            board[i] = '';
+                            bestScore = Math.min(score, bestScore);
+                        }
+                    }
+                    return bestScore;
+                }
+            }
+
+            checkWinner() {
+                return this.checkWinnerForBoard(this.board);
+            }
+
+            checkWinnerForBoard(board) {
+                const patterns = [
+                    [0,1,2], [3,4,5], [6,7,8], // 가로
+                    [0,3,6], [1,4,7], [2,5,8], // 세로
+                    [0,4,8], [2,4,6] // 대각선
+                ];
+
+                for (const [a, b, c] of patterns) {
+                    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                        return board[a];
+                    }
+                }
+                return null;
+            }
+
+            endGame(result) {
+                this.gameActive = false;
+                this.stats.totalGames++;
+
+                let message = '';
+                if (result === 'draw') {
+                    this.stats.draws++;
+                    this.stats.currentStreak = 0;
+                    message = '무승부입니다';
+                    this.playSound('draw');
+                } else if (result === 'X') {
+                    this.stats.playerWins++;
+                    this.stats.currentStreak++;
+                    if (this.stats.currentStreak > this.stats.bestStreak) {
+                        this.stats.bestStreak = this.stats.currentStreak;
+                    }
+                    message = '축하합니다! 승리!';
+                    this.playSound('win');
+                    this.createCelebration();
+                } else {
+                    this.stats.aiWins++;
+                    this.stats.currentStreak = 0;
+                    message = 'AI 승리! 다시 도전!';
+                    this.playSound('lose');
+                }
+
+                this.updateStatus(message, '새 게임을 시작하세요');
+                this.updateDisplay();
+                this.saveData();
+                this.highlightWinningCells(result);
+            }
+
+            highlightWinningCells(winner) {
+                if (winner === 'draw') return;
+
+                const patterns = [
+                    [0,1,2], [3,4,5], [6,7,8],
+                    [0,3,6], [1,4,7], [2,5,8],
+                    [0,4,8], [2,4,6]
+                ];
+
+                for (const pattern of patterns) {
+                    const [a, b, c] = pattern;
+                    if (this.board[a] === winner && this.board[b] === winner && this.board[c] === winner) {
+                        pattern.forEach(index => {
+                            const cell = document.querySelector(`[data-index="${index}"]`);
+                            cell.style.background = 'linear-gradient(135deg, #f59e0b, #d97706)';
+                            cell.style.transform = 'translateY(-4px) scale(1.05)';
+                            cell.style.boxShadow = '0 0 30px rgba(245, 158, 11, 0.6)';
+                            cell.style.borderColor = '#f59e0b';
+                        });
+                        break;
+                    }
+                }
+            }
+
+            updateCell(index, player) {
+                const cell = document.querySelector(`[data-index="${index}"]`);
+                const content = document.createElement('div');
+                content.className = `cell-content cell-${player.toLowerCase()}`;
+                content.textContent = player;
+                cell.appendChild(content);
+                cell.classList.add('disabled');
+            }
+
+            updateStatus(main = null, sub = null) {
+                const statusText = document.getElementById('statusText');
+                const statusSub = document.getElementById('statusSub');
+
+                if (main) {
+                    statusText.textContent = main;
+                    statusSub.textContent = sub || '';
+                    return;
+                }
+
+                if (this.currentPlayer === 'X') {
+                    statusText.textContent = '당신의 차례입니다';
+                    statusSub.textContent = '빈 칸을 터치하여 X를 놓으세요';
+                } else {
+                    statusText.textContent = 'AI가 생각 중입니다';
+                    statusSub.textContent = `${this.currentDifficulty} 난이도로 계산 중`;
+                }
+            }
+
+            updateDisplay() {
+                document.getElementById('playerScore').textContent = this.stats.playerWins;
+                document.getElementById('aiScore').textContent = this.stats.aiWins;
+                document.getElementById('drawScore').textContent = this.stats.draws;
+                document.getElementById('totalGames').textContent = this.stats.totalGames;
+                document.getElementById('currentStreak').textContent = this.stats.currentStreak;
+                document.getElementById('difficulty').textContent = this.currentDifficulty;
+                
+                const winRate = this.stats.totalGames > 0 
+                    ? Math.round((this.stats.playerWins / this.stats.totalGames) * 100)
+                    : 0;
+                document.getElementById('winRate').textContent = `${winRate}%`;
+            }
+
+            showAIThinking() {
+                document.getElementById('aiThinking').classList.add('active');
+            }
+
+            hideAIThinking() {
+                document.getElementById('aiThinking').classList.remove('active');
+            }
+
+            createCelebration() {
+                const celebration = document.getElementById('celebration');
+                const colors = ['#00d4ff', '#7c3aed', '#f59e0b', '#10b981', '#ef4444'];
+                
+                for (let i = 0; i < 50; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = `${Math.random() * 100}%`;
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = `${Math.random() * 2}s`;
+                    
+                    celebration.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 3000);
+                }
+            }
+
+            playSound(type) {
+                if (!this.soundEnabled || !this.audioContext) return;
+                
+                const oscillator = this.audioContext.createOscillator();
+                const gainNode = this.audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(this.audioContext.destination);
+                
+                switch (type) {
+                    case 'move':
+                        oscillator.frequency.setValueAtTime(800, this.audioContext.currentTime);
+                        oscillator.frequency.exponentialRampToValueAtTime(400, this.audioContext.currentTime + 0.1);
+                        gainNode.gain.setValueAtTime(0.1, this.audioContext.currentTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.1);
+                        oscillator.start();
+                        oscillator.stop(this.audioContext.currentTime + 0.1);
+                        break;
+                        
+                    case 'aiMove':
+                        oscillator.frequency.setValueAtTime(600, this.audioContext.currentTime);
+                        gainNode.gain.setValueAtTime(0.08, this.audioContext.currentTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.15);
+                        oscillator.start();
+                        oscillator.stop(this.audioContext.currentTime + 0.15);
+                        break;
+                        
+                    case 'win':
+                        [523, 659, 784, 1047].forEach((freq, i) => {
+                            const osc = this.audioContext.createOscillator();
+                            const gain = this.audioContext.createGain();
+                            osc.connect(gain);
+                            gain.connect(this.audioContext.destination);
+                            osc.frequency.setValueAtTime(freq, this.audioContext.currentTime + i * 0.15);
+                            gain.gain.setValueAtTime(0.08, this.audioContext.currentTime + i * 0.15);
+                            gain.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + i * 0.15 + 0.3);
+                            osc.start(this.audioContext.currentTime + i * 0.15);
+                            osc.stop(this.audioContext.currentTime + i * 0.15 + 0.3);
+                        });
+                        break;
+                        
+                    case 'lose':
+                        oscillator.frequency.setValueAtTime(300, this.audioContext.currentTime);
+                        oscillator.frequency.exponentialRampToValueAtTime(150, this.audioContext.currentTime + 0.5);
+                        gainNode.gain.setValueAtTime(0.1, this.audioContext.currentTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.5);
+                        oscillator.start();
+                        oscillator.stop(this.audioContext.currentTime + 0.5);
+                        break;
+                        
+                    case 'draw':
+                        oscillator.frequency.setValueAtTime(400, this.audioContext.currentTime);
+                        gainNode.gain.setValueAtTime(0.05, this.audioContext.currentTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.3);
+                        oscillator.start();
+                        oscillator.stop(this.audioContext.currentTime + 0.3);
+                        break;
+                        
+                    case 'error':
+                        oscillator.frequency.setValueAtTime(200, this.audioContext.currentTime);
+                        gainNode.gain.setValueAtTime(0.1, this.audioContext.currentTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.2);
+                        oscillator.start();
+                        oscillator.stop(this.audioContext.currentTime + 0.2);
+                        break;
+                }
+            }
+
+            toggleSound() {
+                this.soundEnabled = !this.soundEnabled;
+                const toggle = document.getElementById('soundToggle');
+                toggle.textContent = this.soundEnabled ? '🔊' : '🔇';
+                
+                if (this.soundEnabled && this.audioContext?.state === 'suspended') {
+                    this.audioContext.resume();
+                }
+                
+                this.saveData();
+            }
+
+            newGame() {
+                this.board = Array(9).fill('');
+                this.currentPlayer = 'X';
+                this.gameActive = true;
+                this.currentDifficulty = this.getRandomDifficulty();
+                
+                document.querySelectorAll('.cell').forEach(cell => {
+                    cell.innerHTML = '';
+                    cell.classList.remove('disabled');
+                    cell.style.background = '';
+                    cell.style.transform = '';
+                    cell.style.boxShadow = '';
+                    cell.style.borderColor = '';
+                });
+                
+                this.updateStatus();
+                this.updateDisplay();
+                this.playSound('move');
+                
+                // 50% 확률로 AI가 먼저 시작
+                if (Math.random() < 0.5) {
+                    this.currentPlayer = 'O';
+                    setTimeout(() => this.makeAIMove(), 1000);
+                }
+            }
+
+            saveData() {
+                const data = {
+                    stats: this.stats,
+                    settings: {
+                        soundEnabled: this.soundEnabled
+                    }
+                };
+                
+                try {
+                    localStorage.setItem('beautifulTicTacToeData', JSON.stringify(data));
+                } catch (e) {
+                    console.warn('저장 실패:', e);
+                }
+            }
+
+            loadData() {
+                try {
+                    const saved = localStorage.getItem('beautifulTicTacToeData');
+                    if (saved) {
+                        const data = JSON.parse(saved);
+                        
+                        if (data.stats) {
+                            this.stats = { ...this.stats, ...data.stats };
+                        }
+                        
+                        if (data.settings) {
+                            this.soundEnabled = data.settings.soundEnabled ?? true;
+                            document.getElementById('soundToggle').textContent = this.soundEnabled ? '🔊' : '🔇';
+                        }
+                    }
+                } catch (e) {
+                    console.warn('로드 실패:', e);
+                }
+            }
+        }
+
+        // 게임 시작
+        document.addEventListener('DOMContentLoaded', () => {
+            const game = new BeautifulTicTacToe();
+            
+            // PWA 설치 프롬프트
+            let deferredPrompt;
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                
+                const installBtn = document.createElement('button');
+                installBtn.innerHTML = '📱 앱 설치';
+                installBtn.style.cssText = `
+                    position: fixed; bottom: 20px; left: 20px; z-index: 100;
+                    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+                    color: white; border: none; padding: 0.75rem 1rem; border-radius: 12px;
+                    font-weight: 600; cursor: pointer; box-shadow: var(--glow);
+                    font-family: inherit; font-size: 0.9rem;
+                `;
+                
+                installBtn.addEventListener('click', () => {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((result) => {
+                        if (result.outcome === 'accepted') {
+                            installBtn.remove();
+                        }
+                        deferredPrompt = null;
+                    });
+                });
+                
+                document.body.appendChild(installBtn);
+                
+                setTimeout(() => {
+                    if (installBtn.parentNode) {
+                        installBtn.remove();
+                    }
+                }, 8000);
+            });
+            
+            // 서비스 워커 등록
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZXZlbnQgPT4ge2V2ZW50LndhaXRVbnRpbChzZWxmLnNraXBXYWl0aW5nKCkpO30pO3NlbGYuYWRkRXZlbnRMaXN0ZW5lcignYWN0aXZhdGUnLCBldmVudCA9PiB7ZXZlbnQud2FpdFVudGlsKHNlbGYuY2xpZW50cy5jbGFpbSgpKTt9KTtzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2ZldGNoJywgZXZlbnQgPT4ge2V2ZW50LnJlc3BvbmRXaXRoKGZldGNoKGV2ZW50LnJlcXVlc3QpKTt9KTs=')
+                    .catch(console.error);
+            }
+        });
+    </script>
+</body>
+</html>
