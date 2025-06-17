@@ -13,6 +13,15 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            /* 모바일 드래그 방지 */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            /* 터치 하이라이트 제거 */
+            -webkit-tap-highlight-color: transparent;
+            /* 터치 액션 제한 */
+            touch-action: manipulation;
         }
 
         :root {
@@ -48,6 +57,8 @@
             padding: 1rem;
             position: relative;
             overflow-x: hidden;
+            /* 모바일 스크롤 바운스 방지 */
+            overscroll-behavior: none;
         }
 
         /* 배경 애니메이션 */
@@ -346,6 +357,9 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            /* 모바일 터치 최적화 */
+            min-height: 80px;
+            min-width: 80px;
         }
 
         .cell::before {
@@ -357,14 +371,9 @@
             transition: opacity 0.3s ease;
         }
 
-        .cell:hover:not(.disabled)::before {
-            opacity: 0.1;
-        }
-
-        .cell:hover:not(.disabled) {
-            transform: translateY(-4px) scale(1.02);
-            border-color: var(--accent-primary);
-            box-shadow: var(--glow);
+        .cell:not(.disabled):active {
+            transform: scale(0.95);
+            background: var(--bg-tertiary);
         }
 
         .cell.disabled {
@@ -549,6 +558,8 @@
 
             .cell {
                 font-size: 2rem;
+                min-height: 70px;
+                min-width: 70px;
             }
 
             .board {
@@ -582,16 +593,35 @@
             }
         }
 
-        /* 터치 최적화 */
+        /* 터치 디바이스 최적화 */
         @media (hover: none) and (pointer: coarse) {
             .cell:hover:not(.disabled) {
                 transform: none;
                 box-shadow: none;
             }
             
-            .cell:active:not(.disabled) {
-                transform: scale(0.95);
-                background: var(--bg-tertiary);
+            .cell:hover:not(.disabled)::before {
+                opacity: 0;
+            }
+            
+            .score-item:hover {
+                transform: none;
+                box-shadow: none;
+            }
+            
+            .score-item:hover::before {
+                transform: scaleX(0);
+            }
+            
+            .sound-toggle:hover {
+                transform: none;
+                box-shadow: none;
+                border-color: var(--border-light);
+            }
+            
+            .new-game-btn:hover {
+                transform: none;
+                box-shadow: none;
             }
         }
     </style>
@@ -604,7 +634,6 @@
         </header>
 
         <div class="controls">
-            <div class="sound-toggle" id="soundToggle">🔊</div>
             <button class="new-game-btn" id="newGameBtn">새 게임</button>
         </div>
 
@@ -672,7 +701,7 @@
     <div class="celebration" id="celebration"></div>
 
     <script>
-        class BeautifulTicTacToe {
+        class MobileFriendlyTicTacToe {
             constructor() {
                 this.board = Array(9).fill('');
                 this.currentPlayer = 'X';
@@ -680,6 +709,13 @@
                 this.soundEnabled = true;
                 this.difficulties = ['어려움', '전문가', '불가능'];
                 this.currentDifficulty = this.getRandomDifficulty();
+                
+                // 터치 이벤트 관리
+                this.touchStartTime = 0;
+                this.touchStartPos = { x: 0, y: 0 };
+                this.isDragging = false;
+                this.dragThreshold = 10; // 픽셀
+                this.tapTimeout = 300; // 밀리초
                 
                 this.stats = {
                     playerWins: 0,
@@ -721,18 +757,49 @@
             }
 
             setupEventListeners() {
-                // 셀 클릭
+                // 셀 터치 이벤트 (모바일 최적화)
                 document.querySelectorAll('.cell').forEach((cell, index) => {
-                    cell.addEventListener('click', () => this.handleCellClick(index));
+                    // 터치 시작
+                    cell.addEventListener('touchstart', (e) => {
+                        e.preventDefault();
+                        this.handleTouchStart(e, index);
+                    }, { passive: false });
+
+                    // 터치 이동
+                    cell.addEventListener('touchmove', (e) => {
+                        e.preventDefault();
+                        this.handleTouchMove(e);
+                    }, { passive: false });
+
+                    // 터치 종료
+                    cell.addEventListener('touchend', (e) => {
+                        e.preventDefault();
+                        this.handleTouchEnd(e, index);
+                    }, { passive: false });
+
+                    // 마우스 이벤트 (데스크톱)
+                    cell.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        // 터치 디바이스가 아닌 경우에만 클릭 처리
+                        if (!this.isTouchDevice()) {
+                            this.handleCellClick(index);
+                        }
+                    });
                 });
 
-                // 새 게임
-                document.getElementById('newGameBtn').addEventListener('click', () => this.newGame());
+                // 새 게임 버튼
+                document.getElementById('newGameBtn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.newGame();
+                });
 
                 // 사운드 토글
-                document.getElementById('soundToggle').addEventListener('click', () => this.toggleSound());
+                document.getElementById('soundToggle').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.toggleSound();
+                });
 
-                // 키보드 지원
+                // 키보드 지원 (데스크톱)
                 document.addEventListener('keydown', (e) => {
                     if (e.key >= '1' && e.key <= '9') {
                         this.handleCellClick(parseInt(e.key) - 1);
@@ -741,21 +808,66 @@
                     }
                 });
 
-                // 터치 제스처
-                let touchStartY = 0;
+                // 컨텍스트 메뉴 방지 (모바일)
+                document.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                });
+
+                // 드래그 방지
+                document.addEventListener('dragstart', (e) => {
+                    e.preventDefault();
+                });
+            }
+
+            // 터치 디바이스 감지
+            isTouchDevice() {
+                return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            }
+
+            // 터치 시작 처리
+            handleTouchStart(e, index) {
+                this.touchStartTime = Date.now();
+                this.touchStartPos = {
+                    x: e.touches[0].clientX,
+                    y: e.touches[0].clientY
+                };
+                this.isDragging = false;
+            }
+
+            // 터치 이동 처리
+            handleTouchMove(e) {
+                if (!this.touchStartPos.x || !this.touchStartPos.y) return;
+
+                const currentPos = {
+                    x: e.touches[0].clientX,
+                    y: e.touches[0].clientY
+                };
+
+                const deltaX = Math.abs(currentPos.x - this.touchStartPos.x);
+                const deltaY = Math.abs(currentPos.y - this.touchStartPos.y);
+
+                // 드래그 임계값 초과 시 드래그로 판단
+                if (deltaX > this.dragThreshold || deltaY > this.dragThreshold) {
+                    this.isDragging = true;
+                }
+            }
+
+            // 터치 종료 처리
+            handleTouchEnd(e, index) {
+                const touchDuration = Date.now() - this.touchStartTime;
                 
-                document.addEventListener('touchstart', (e) => {
-                    touchStartY = e.touches[0].clientY;
-                });
+                // 드래그가 아니고, 짧은 터치인 경우에만 클릭으로 처리
+                if (!this.isDragging && touchDuration < this.tapTimeout) {
+                    // 약간의 지연을 두어 의도하지 않은 더블 탭 방지
+                    setTimeout(() => {
+                        this.handleCellClick(index);
+                    }, 50);
+                }
 
-                document.addEventListener('touchend', (e) => {
-                    const touchEndY = e.changedTouches[0].clientY;
-                    const deltaY = touchEndY - touchStartY;
-
-                    if (Math.abs(deltaY) > 50 && deltaY < 0) {
-                        this.newGame();
-                    }
-                });
+                // 초기화
+                this.touchStartTime = 0;
+                this.touchStartPos = { x: 0, y: 0 };
+                this.isDragging = false;
             }
 
             handleCellClick(index) {
@@ -935,7 +1047,7 @@
                         pattern.forEach(index => {
                             const cell = document.querySelector(`[data-index="${index}"]`);
                             cell.style.background = 'linear-gradient(135deg, #f59e0b, #d97706)';
-                            cell.style.transform = 'translateY(-4px) scale(1.05)';
+                            cell.style.transform = 'scale(1.05)';
                             cell.style.boxShadow = '0 0 30px rgba(245, 158, 11, 0.6)';
                             cell.style.borderColor = '#f59e0b';
                         });
@@ -1126,7 +1238,7 @@
                 };
                 
                 try {
-                    localStorage.setItem('beautifulTicTacToeData', JSON.stringify(data));
+                    localStorage.setItem('mobileTicTacToeData', JSON.stringify(data));
                 } catch (e) {
                     console.warn('저장 실패:', e);
                 }
@@ -1134,7 +1246,7 @@
 
             loadData() {
                 try {
-                    const saved = localStorage.getItem('beautifulTicTacToeData');
+                    const saved = localStorage.getItem('mobileTicTacToeData');
                     if (saved) {
                         const data = JSON.parse(saved);
                         
@@ -1155,7 +1267,7 @@
 
         // 게임 시작
         document.addEventListener('DOMContentLoaded', () => {
-            const game = new BeautifulTicTacToe();
+            const game = new MobileFriendlyTicTacToe();
             
             // PWA 설치 프롬프트
             let deferredPrompt;
